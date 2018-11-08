@@ -1,0 +1,47 @@
+#include<iostream>
+#include<cstdio>
+#include<cassert>
+#include<cmath>
+#include<string.h>
+ 
+using namespace std;
+ 
+const int maxn=6060;
+int map[maxn][maxn];
+bool visit[maxn];
+int dist[maxn];
+int n,m;
+int x,y,w;
+ 
+void dijkstar(){
+    memset(visit,0,sizeof(visit));
+    memset(dist,0x3f,sizeof(dist));
+    dist[1]=0;
+    for(int i=1;i<n;i++){
+        int x=0;
+        for(int j=1;j<=n;j++){
+            if(!visit[j]&&(x==0||dist[j]<dist[x])) j=x;
+        }
+        visit[x]=1;
+        for(int y=1;y<=n;y++){
+            dist[y]=min(dist[y],dist[x]+map[x][y]);
+        }
+    }
+}
+ 
+int main(){
+    memset(map,0x3f,sizeof(map));
+    cin>>n>>m;
+    for(int i=1;i<=n;i++){
+        map[i][i]=0;
+    }
+    for(int i=1;i<=m;i++){
+        cin>>x>>y>>w;
+        map[x][y]=w;
+    }
+    dijkstar();
+    for(int i=1;i<=n;i++){
+        printf("%d\n",dist[i]);
+    }
+    return 0;
+}
