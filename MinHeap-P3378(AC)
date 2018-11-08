@@ -1,0 +1,77 @@
+#include<iostream>
+#include<cstdio>
+#include<cmath>
+#include<cassert>
+#include<algorithm>
+#include<cstring>
+ 
+using namespace std;
+ 
+int *data;
+int num=0;
+int n;
+ 
+void init(int capacity){
+     
+    data=new int [capacity+1];
+} 
+ 
+void shiftUp(int k){
+     
+    while(k>1&&data[k/2]>data[k]){
+        swap(data[k/2],data[k]);
+        k/=2;
+    }
+}
+ 
+void insert(int item){
+     
+    data[num+1]=item;
+    num++;
+    shiftUp(num);
+}
+ 
+void shiftDown(int k){
+    while(k*2<=num){
+        int j=2*k;
+        if(j+1<=num&&data[j]>data[j+1]) j+=1;
+        if(data[j]>data[k]) break;
+        swap(data[j],data[k]);
+        k=j;
+    }
+}
+ 
+void idelete(){
+     
+    if(num==0) return ;
+    else{
+        data[1]=data[num];
+        num--;
+        shiftDown(1);
+    }
+}
+ 
+int main(){
+     
+    //freopen("testdata.in","r",stdin);
+    //freopen("P3378.out","w",stdout);
+    cin>>n;
+    init(100000);
+    int ask;
+    int temp;
+    for(int i=1;i<=n;i++){
+        cin>>ask;
+        if(ask==1){
+            cin>>temp;
+            insert(temp);
+        }
+        if(ask==2){
+            printf("%d\n",data[1]);
+        }
+        if(ask==3){
+            idelete();
+        }
+    }
+    delete [] data;
+    return 0;
+}
