@@ -1,0 +1,81 @@
+#include<iostream>
+#include<cstdio>
+#include<string.h>
+#include<cmath>
+#include<cassert>
+ 
+using namespace std;
+ 
+template<typename Item>
+class MinHeap{
+    private:
+        Item *data;
+        int count;
+        int capacity;
+         
+        void shiftup(int k){
+            while(k>1&&data[k/2]>data[k]){
+                swap(data[k/2],data[k]);
+                k/=2;
+            }
+        }
+        void shiftDown(int k){
+            while(2*k<=count){
+                int j=2*k;
+                if(j+1<=count&&data[j+1]<data[j]) j+=1;
+                if(data[k]<data[j]) break;
+                swap(data[k],data[j]);
+                k=j;
+            }
+        }
+         
+    public:
+        MinHeap(int capacity){
+            data=new int [capacity+1];
+            count=0;
+            this->capacity=capacity;
+        }
+        ~MinHeap(){
+            delete [] data;
+        }
+        void insert(Item item){
+            assert(count+1<=capacity);
+            data[count+1]=item;
+            count++;
+            shiftup(count);
+        }
+        void deleteMin(){
+            //if(count<=0) return;
+            assert(count>0);
+            swap(data[1],data[count]);
+            count--;
+            shiftDown(1);
+        }
+        void getMinItem(){
+            int minnum=data[1];
+            cout<<minnum<<endl;
+        }
+};
+ 
+int main(){
+    freopen("testdata.in","r",stdin);
+    freopen("testdata.out","w",stdout);
+    MinHeap<int> minheap=MinHeap<int>(100001);
+    int n;
+    int ask,item;
+    cin>>n;
+    for(int i=1;i<=n;i++){
+        cin>>ask;
+        if(ask==1){
+            cin>>item;
+            minheap.insert(item);
+        }
+        if(ask==2){
+            minheap.getMinItem();
+        }
+        if(ask==3){
+            minheap.deleteMin();
+        }
+    }
+    return 0; 
+}
